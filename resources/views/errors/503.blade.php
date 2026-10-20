@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '503')
+@section('color', 'pastel-azul')
+@section('icono', 'bi-cone-striped')
+@section('titulo', 'Estamos en mantenimiento')
+@section('mensaje', 'Volvemos en unos minutos.')

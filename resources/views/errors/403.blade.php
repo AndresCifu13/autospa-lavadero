@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '403')
+@section('color', 'pastel-rosa')
+@section('icono', 'bi-shield-lock')
+@section('titulo', 'No tienes permiso')
+@section('mensaje', $exception->getMessage() ?: 'Esta sección es solo para el administrador.')

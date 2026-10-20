@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '404')
+@section('color', 'pastel-amarillo')
+@section('icono', 'bi-signpost-split')
+@section('titulo', 'No encontramos esa página')
+@section('mensaje', 'Puede que el registro se haya eliminado o que el enlace esté mal escrito.')

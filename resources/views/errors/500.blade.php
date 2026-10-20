@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '500')
+@section('color', 'pastel-rosa')
+@section('icono', 'bi-tools')
+@section('titulo', 'Algo salió mal')
+@section('mensaje', 'Tuvimos un problema interno. Ya quedó registrado; inténtalo otra vez en un momento.')

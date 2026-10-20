@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '429')
+@section('color', 'pastel-durazno')
+@section('icono', 'bi-speedometer')
+@section('titulo', 'Demasiadas peticiones')
+@section('mensaje', 'Espera un momento antes de volver a intentarlo.')

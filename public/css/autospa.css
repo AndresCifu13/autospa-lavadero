@@ -1,0 +1,240 @@
+/* =========================================================
+   AutoSpa M&A — estilos con colores pastel
+   Se usa junto con Bootstrap 5. Aquí solo va lo propio.
+   ========================================================= */
+
+:root {
+    /* Colores base */
+    --crema: #fbf8f3;
+    --blanco: #ffffff;
+    --tinta: #2f3a4a;
+    --tinta-suave: #6b7686;
+    --borde: #ece6dc;
+
+    /* Pasteles (fondo) y su tono fuerte (texto/íconos) */
+    --azul: #d6e8fb;      --azul-fuerte: #3f6fae;
+    --rosa: #fbdde1;      --rosa-fuerte: #c24d63;
+    --menta: #d3f0e2;     --menta-fuerte: #2a8063;
+    --amarillo: #fdf0c4;  --amarillo-fuerte: #94700a;
+    --lila: #e6dcf7;      --lila-fuerte: #6b55a8;
+    --durazno: #ffe3d1;   --durazno-fuerte: #b5602a;
+
+    --radio: 18px;
+    --sombra: 0 6px 24px rgba(47, 58, 74, .06);
+
+    /* Ajustamos las variables de Bootstrap a nuestra paleta */
+    --bs-body-bg: var(--crema);
+    --bs-body-color: var(--tinta);
+    --bs-body-font-family: 'Nunito', system-ui, sans-serif;
+    --bs-border-color: var(--borde);
+    --bs-primary: var(--azul-fuerte);
+    --bs-link-color: var(--azul-fuerte);
+    --bs-link-hover-color: #2d5287;
+}
+
+body { min-height: 100vh; padding-bottom: 84px; }
+@media (min-width: 1200px) { body { padding-bottom: 24px; } }
+
+h1, h2, h3, h4, h5, .fw-black { font-weight: 800; letter-spacing: -.01em; }
+.text-suave { color: var(--tinta-suave) !important; }
+.titulo-pagina { font-size: 1.6rem; margin: 0; }
+
+/* ---------- Marca ---------- */
+.marca { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; }
+.marca-icono {
+    width: 38px; height: 38px; border-radius: 12px;
+    display: grid; place-items: center; font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--azul) 0%, var(--rosa) 100%);
+    color: var(--azul-fuerte);
+}
+.marca-texto { font-weight: 900; font-size: 1.2rem; line-height: 1; color: var(--azul-fuerte); }
+.marca-texto span { color: var(--rosa-fuerte); }
+.marca-texto small { display: block; font-size: .62rem; letter-spacing: .2em; color: var(--tinta-suave); font-weight: 700; margin-top: 2px; }
+
+a { color: var(--azul-fuerte); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a.btn:hover, .nav-link:hover, .dropdown-item:hover, .item-lista:hover, .navbar-brand:hover, .nav-inferior a:hover { text-decoration: none; }
+.min-w-0 { min-width: 0; }
+
+/* ---------- Navbar ---------- */
+.navbar-autospa {
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--borde);
+}
+.navbar-autospa .nav-link {
+    color: var(--tinta-suave); font-weight: 700; border-radius: 999px;
+    padding: .45rem .9rem !important; margin: 0 .1rem; white-space: nowrap;
+    transition: background .15s, color .15s;
+}
+.navbar-autospa .nav-link:hover { background: var(--crema); color: var(--tinta); }
+.navbar-autospa .nav-link.active { background: var(--azul); color: var(--azul-fuerte); }
+.navbar-autospa .dropdown-menu { border: 1px solid var(--borde); border-radius: 14px; box-shadow: var(--sombra); padding: .4rem; }
+.navbar-autospa .dropdown-item { border-radius: 10px; font-weight: 600; padding: .5rem .8rem; }
+.navbar-autospa .dropdown-item.active, .navbar-autospa .dropdown-item:active { background: var(--azul); color: var(--azul-fuerte); }
+
+.avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: inline-grid; place-items: center;
+    font-weight: 800; font-size: .85rem;
+    background: var(--lila); color: var(--lila-fuerte);
+}
+.avatar-lg { width: 64px; height: 64px; font-size: 1.4rem; }
+
+/* ---------- Barra inferior (solo celular) ---------- */
+.nav-inferior {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 1030;
+    background: var(--blanco); border-top: 1px solid var(--borde);
+    display: flex; justify-content: space-around;
+    padding: .35rem .25rem calc(.35rem + env(safe-area-inset-bottom));
+}
+.nav-inferior a {
+    flex: 1; text-align: center; text-decoration: none;
+    color: var(--tinta-suave); font-size: .7rem; font-weight: 700;
+    padding: .3rem 0; border-radius: 12px;
+}
+.nav-inferior a i { display: block; font-size: 1.3rem; line-height: 1.2; }
+.nav-inferior a.active { color: var(--azul-fuerte); background: var(--azul); }
+.nav-inferior .boton-central i {
+    width: 46px; height: 46px; margin: -18px auto 0; border-radius: 50%;
+    display: grid; place-items: center; font-size: 1.5rem;
+    background: var(--rosa-fuerte); color: #fff; box-shadow: 0 6px 16px rgba(194, 77, 99, .35);
+}
+
+/* ---------- Tarjetas ---------- */
+.tarjeta {
+    background: var(--blanco); border: 1px solid var(--borde);
+    border-radius: var(--radio); box-shadow: var(--sombra);
+}
+.tarjeta-cuerpo { padding: 1.25rem; }
+.tarjeta-titulo { font-size: 1rem; font-weight: 800; margin-bottom: .9rem; display: flex; align-items: center; gap: .5rem; }
+
+.stat { border-radius: var(--radio); padding: 1rem 1.1rem; height: 100%; }
+.stat .stat-icono { font-size: 1.3rem; opacity: .9; }
+.stat .stat-valor { font-size: 1.5rem; font-weight: 900; line-height: 1.1; margin-top: .35rem; }
+.stat .stat-texto { font-size: .82rem; font-weight: 700; opacity: .85; }
+
+/* ---------- Fondos y etiquetas pastel ---------- */
+.pastel-azul { background: var(--azul); color: var(--azul-fuerte); }
+.pastel-rosa { background: var(--rosa); color: var(--rosa-fuerte); }
+.pastel-verde { background: var(--menta); color: var(--menta-fuerte); }
+.pastel-amarillo { background: var(--amarillo); color: var(--amarillo-fuerte); }
+.pastel-lila { background: var(--lila); color: var(--lila-fuerte); }
+.pastel-durazno { background: var(--durazno); color: var(--durazno-fuerte); }
+.pastel-gris { background: #eef0f3; color: var(--tinta-suave); }
+
+.etiqueta {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .22rem .65rem; border-radius: 999px;
+    font-size: .76rem; font-weight: 800; white-space: nowrap;
+}
+
+/* ---------- Botones ---------- */
+.btn { border-radius: 12px; font-weight: 700; padding: .55rem 1.05rem; }
+.btn-sm { border-radius: 10px; padding: .3rem .7rem; }
+.btn-principal { background: var(--azul-fuerte); color: #fff; border: 0; }
+.btn-principal:hover, .btn-principal:focus { background: #345e95; color: #fff; }
+.btn-rosa { background: var(--rosa-fuerte); color: #fff; border: 0; }
+.btn-rosa:hover { background: #a93f54; color: #fff; }
+.btn-suave { background: var(--azul); color: var(--azul-fuerte); border: 0; }
+.btn-suave:hover { background: #c5ddf7; color: var(--azul-fuerte); }
+.btn-verde { background: var(--menta); color: var(--menta-fuerte); border: 0; }
+.btn-verde:hover { background: #bfe8d4; color: var(--menta-fuerte); }
+.btn-borrar { background: var(--rosa); color: var(--rosa-fuerte); border: 0; }
+.btn-borrar:hover { background: #f8c9cf; color: var(--rosa-fuerte); }
+.btn-blanco { background: var(--blanco); border: 1px solid var(--borde); color: var(--tinta); }
+.btn-blanco:hover { background: var(--crema); }
+
+.btn:disabled, .btn.disabled { opacity: .5; }
+.btn-rosa:disabled { background: var(--rosa-fuerte); color: #fff; }
+.btn-principal:disabled { background: var(--azul-fuerte); color: #fff; }
+
+/* ---------- Formularios ---------- */
+.form-control, .form-select {
+    border-radius: 12px; border-color: var(--borde); padding: .6rem .85rem; background-color: #fff;
+}
+.form-control:focus, .form-select:focus { border-color: #a9c8ec; box-shadow: 0 0 0 .2rem rgba(169, 200, 236, .35); }
+.form-label { font-weight: 700; font-size: .88rem; margin-bottom: .3rem; }
+.form-check-input:checked { background-color: var(--azul-fuerte); border-color: var(--azul-fuerte); }
+.placa-input { text-transform: uppercase; font-weight: 900; letter-spacing: .15em; font-size: 1.3rem; text-align: center; }
+
+/* Tarjetas seleccionables (tipo de vehículo y servicios) */
+.opcion-check { position: relative; }
+.opcion-check input { position: absolute; opacity: 0; }
+.opcion-check label {
+    display: block; cursor: pointer; height: 100%;
+    border: 2px solid var(--borde); border-radius: 14px; padding: .8rem; background: #fff;
+    transition: border-color .15s, background .15s;
+}
+.opcion-check input:checked + label { border-color: var(--azul-fuerte); background: var(--azul); }
+.opcion-check input:focus-visible + label { outline: 3px solid #a9c8ec; }
+.opcion-check input:disabled + label { opacity: .45; cursor: not-allowed; }
+
+/* ---------- Tablas ---------- */
+.tabla { margin: 0; }
+.tabla thead th {
+    font-size: .75rem; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--tinta-suave); font-weight: 800; background: var(--crema);
+    border-bottom: 1px solid var(--borde); white-space: nowrap;
+}
+.tabla td { vertical-align: middle; border-color: var(--borde); }
+.tabla tbody tr:hover { background: #fdfbf7; }
+.placa {
+    display: inline-block; font-weight: 900; letter-spacing: .1em; font-size: .85rem;
+    background: var(--amarillo); color: #4a3b05; border: 2px solid #e7d48a;
+    border-radius: 8px; padding: .1rem .5rem;
+}
+
+/* Lista tipo tarjeta en celular */
+.item-lista { border-bottom: 1px solid var(--borde); padding: .9rem 1.1rem; }
+.item-lista:last-child { border-bottom: 0; }
+
+/* ---------- Progreso de fidelización ---------- */
+.sellos { display: flex; flex-wrap: wrap; gap: .35rem; }
+.sello {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: grid; place-items: center; font-size: .8rem;
+    border: 2px dashed #d6cfc2; color: #c8c0b2;
+}
+.sello.lleno { border: 0; background: var(--menta); color: var(--menta-fuerte); }
+.sello.premio { border-color: var(--rosa-fuerte); color: var(--rosa-fuerte); }
+
+/* ---------- Barras de la gráfica simple ---------- */
+.grafica { display: flex; align-items: flex-end; gap: .5rem; height: 160px; }
+.grafica .barra-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.grafica .barra { width: 100%; max-width: 42px; border-radius: 10px 10px 4px 4px; background: linear-gradient(180deg, #b9d6f5, var(--azul)); min-height: 4px; }
+.grafica .barra-col:last-child .barra { background: linear-gradient(180deg, #f3a9b5, var(--rosa)); }
+.grafica small { font-size: .7rem; color: var(--tinta-suave); font-weight: 700; margin-top: .3rem; white-space: nowrap; }
+
+/* ---------- Alertas ---------- */
+.alerta {
+    border-radius: 14px; padding: .85rem 1rem; display: flex; gap: .6rem; align-items: flex-start;
+    font-weight: 600; border: 0;
+}
+
+/* ---------- Login ---------- */
+.fondo-login {
+    min-height: 100vh; padding: 1.5rem 1rem;
+    background:
+        radial-gradient(circle at 15% 20%, var(--azul) 0, transparent 40%),
+        radial-gradient(circle at 85% 80%, var(--rosa) 0, transparent 40%),
+        radial-gradient(circle at 80% 10%, var(--menta) 0, transparent 30%),
+        var(--crema);
+}
+.caja-login { max-width: 420px; width: 100%; }
+
+/* ---------- Ticket ---------- */
+.ticket { border-top: 2px dashed var(--borde); }
+
+@media print {
+    .no-imprimir, .navbar, .nav-inferior { display: none !important; }
+    body { background: #fff; padding: 0; }
+    .tarjeta { box-shadow: none; border: 0; }
+}
+
+/* Pequeños ajustes para pantallas chicas */
+@media (max-width: 575.98px) {
+    .titulo-pagina { font-size: 1.3rem; }
+    .stat .stat-valor { font-size: 1.25rem; }
+    .tarjeta-cuerpo { padding: 1rem; }
+}

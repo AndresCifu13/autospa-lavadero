@@ -1,0 +1,6 @@
+@extends('errors.plantilla')
+@section('codigo', '419')
+@section('color', 'pastel-lila')
+@section('icono', 'bi-clock-history')
+@section('titulo', 'La página expiró')
+@section('mensaje', 'Pasó mucho tiempo sin actividad. Recarga la página e inténtalo de nuevo.')
