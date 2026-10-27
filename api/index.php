@@ -1,6 +1,6 @@
 <?php
 
-// Reenviar peticiones de archivos estáticos
+// Redirigir peticiones estáticas
 if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== '/') {
     $publicPath = __DIR__ . '/../public' . $_SERVER['REQUEST_URI'];
     if (file_exists($publicPath) && !is_dir($publicPath)) {
@@ -8,24 +8,24 @@ if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== '/') {
     }
 }
 
-// Redirigir carpetas de escritura obligatorias a /tmp de Vercel
-$storageDirs = [
-    '/tmp/storage/app/public',
-    '/tmp/storage/framework/views',
-    '/tmp/storage/framework/cache/data',
-    '/tmp/storage/framework/sessions',
-    '/tmp/storage/logs',
-    '/tmp/bootstrap/cache'
+// Crear carpetas temporales de almacenamiento en /tmp para Vercel
+$_storage = '/tmp/storage';
+$dirs = [
+    $_storage . '/app/public',
+    $_storage . '/framework/views',
+    $_storage . '/framework/cache/data',
+    $_storage . '/framework/sessions',
+    $_storage . '/logs',
 ];
 
-foreach ($storageDirs as $dir) {
+foreach ($dirs as $dir) {
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
 }
 
-putenv('APP_STORAGE_PATH=/tmp/storage');
-putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
+// Sobrescribir las rutas de almacenamiento de Laravel en tiempo de ejecución
+$_ENV['APP_STORAGE_PATH'] = $_storage;
 
 // Cargar Laravel
 require __DIR__ . '/../public/index.php';
