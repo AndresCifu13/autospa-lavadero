@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Vercel atiende por HTTPS a través de un proxy: confiamos en él para que
+        // asset()/url() generen enlaces https y no se bloqueen CSS/JS.
+        $middleware->trustProxies(at: '*');
+
         // Nombre corto para usar en las rutas: ->middleware('rol:admin')
         $middleware->alias(['rol' => VerificarRol::class]);
 

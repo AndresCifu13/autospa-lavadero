@@ -1,31 +1,52 @@
 <?php
 
-// Redirigir peticiones estáticas
-if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== '/') {
-    $publicPath = __DIR__ . '/../public' . $_SERVER['REQUEST_URI'];
-    if (file_exists($publicPath) && !is_dir($publicPath)) {
-        return false;
-    }
-}
+/*
+ * Punto de entrada para Vercel.
+ *
+ * En Vercel el sistema de archivos es de solo lectura, excepto /tmp.
+ * Por eso movemos a /tmp todo lo que Laravel necesita escribir:
+ * storage (vistas compiladas, logs, sesiones de archivo) y bootstrap/cache.
+ */
 
-// Crear carpetas temporales de almacenamiento en /tmp para Vercel
-$_storage = '/tmp/storage';
-$dirs = [
-    $_storage . '/app/public',
-    $_storage . '/framework/views',
-    $_storage . '/framework/cache/data',
-    $_storage . '/framework/sessions',
-    $_storage . '/logs',
-];
+$storage = '/tmp/storage';
 
-foreach ($dirs as $dir) {
-    if (!is_dir($dir)) {
+foreach ([
+    $storage.'/app/public',
+    $storage.'/framework/views',
+    $storage.'/framework/cache/data',
+    $storage.'/framework/sessions',
+    $storage.'/logs',
+    '/tmp/bootstrap/cache',
+] as $dir) {
+    if (! is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
 }
 
-// Sobrescribir las rutas de almacenamiento de Laravel en tiempo de ejecución
-$_ENV['APP_STORAGE_PATH'] = $_storage;
+$runtimeEnv = [
+    // Laravel lee esta variable para cambiar la ruta de storage
+    'LARAVEL_STORAGE_PATH' => $storage,
+    'VIEW_COMPILED_PATH' => $storage.'/framework/views',
 
-// Cargar Laravel
-require __DIR__ . '/../public/index.php';
+    // Archivos de caché que normalmente van en bootstrap/cache
+    'APP_SERVICES_CACHE' => '/tmp/bootstrap/cache/services.php',
+    'APP_PACKAGES_CACHE' => '/tmp/bootstrap/cache/packages.php',
+    'APP_CONFIG_CACHE' => '/tmp/bootstrap/cache/config.php',
+    'APP_ROUTES_CACHE' => '/tmp/bootstrap/cache/routes.php',
+    'APP_EVENTS_CACHE' => '/tmp/bootstrap/cache/events.php',
+];
+
+foreach ($runtimeEnv as $key => $value) {
+    putenv("{$key}={$value}");
+    $_ENV[$key] = $value;
+    $_SERVER[$key] = $value;
+}
+
+// Los logs se mandan a stderr para verlos en el panel de Vercel (Logs),
+// salvo que se haya configurado otra cosa en las variables de entorno.
+if (getenv('LOG_CHANNEL') === false) {
+    putenv('LOG_CHANNEL=stderr');
+    $_ENV['LOG_CHANNEL'] = $_SERVER['LOG_CHANNEL'] = 'stderr';
+}
+
+require __DIR__.'/../public/index.php';
