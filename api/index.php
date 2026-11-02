@@ -42,11 +42,9 @@ foreach ($runtimeEnv as $key => $value) {
     $_SERVER[$key] = $value;
 }
 
-// Los logs se mandan a stderr para verlos en el panel de Vercel (Logs),
-// salvo que se haya configurado otra cosa en las variables de entorno.
-if (getenv('LOG_CHANNEL') === false) {
-    putenv('LOG_CHANNEL=stderr');
-    $_ENV['LOG_CHANNEL'] = $_SERVER['LOG_CHANNEL'] = 'stderr';
-}
+// Los logs siempre van a stderr para verlos en el panel de Vercel (Logs).
+// Un log en archivo quedaría en /tmp y se perdería sin que nadie lo vea.
+putenv('LOG_CHANNEL=stderr');
+$_ENV['LOG_CHANNEL'] = $_SERVER['LOG_CHANNEL'] = 'stderr';
 
 require __DIR__.'/../public/index.php';
