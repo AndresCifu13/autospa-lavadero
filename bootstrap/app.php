@@ -50,7 +50,15 @@ return Application::configure(basePath: dirname(__DIR__))
                 ? 'No se puede completar la acción porque hay otros registros relacionados.'
                 : 'Hubo un problema con la base de datos. Inténtalo de nuevo.';
 
-            return back()->withInput()->with('error', $mensaje);
+            // Solo volvemos atrás si venimos de enviar un formulario desde otra página.
+            // En un GET (o sin página anterior) back() apuntaría a la misma URL o a "/"
+            // y se formaría un bucle infinito de redirecciones (ERR_TOO_MANY_REDIRECTS).
+            $anterior = $request->headers->get('referer');
+            if (! $request->isMethod('GET') && $anterior && $anterior !== $request->fullUrl()) {
+                return back()->withInput()->with('error', $mensaje);
+            }
+
+            return response()->view('errors.500', [], 500);
         });
 
         // Registro que no existe (ej: /clientes/9999) => página 404 bonita

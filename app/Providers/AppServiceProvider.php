@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Ajuste;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
@@ -18,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // En producción (Vercel) todos los enlaces generados usan https. No redirige.
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         // Paginación con el estilo de Bootstrap 5
         Paginator::useBootstrapFive();
 
