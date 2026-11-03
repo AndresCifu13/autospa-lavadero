@@ -49,7 +49,8 @@ class Producto extends Model
             return $query;
         }
 
-        return $query->where(fn ($q) => $q->where('nombre', 'like', "%{$texto}%")
-            ->orWhere('categoria', 'like', "%{$texto}%"));
+        return $query->where(fn ($q) => $q->whereLike('nombre', "%{$texto}%")
+            ->orWhereLike('categoria', "%{$texto}%")
+            ->orWhereLike('descripcion', "%{$texto}%"));
     }
 }

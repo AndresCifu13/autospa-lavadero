@@ -9,16 +9,17 @@
     @endif
 </x-encabezado>
 
-<form class="tarjeta tarjeta-cuerpo mb-3 row g-2 align-items-center mx-0" method="GET">
-    <div class="col-md-7"><input type="search" name="buscar" value="{{ request('buscar') }}" class="form-control" placeholder="Buscar producto o categoría"></div>
-    <div class="col-7 col-md-3">
+<form class="tarjeta tarjeta-cuerpo mb-3 row g-2 align-items-center mx-0" method="GET" role="search" data-busqueda-vivo>
+    <div class="col-md-9"><input type="search" name="buscar" autocomplete="off" value="{{ request('buscar') }}" class="form-control" placeholder="Buscar producto o categoría"></div>
+    <div class="col-12 col-md-3">
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" name="stock_bajo" id="stock_bajo" value="1" @checked(request('stock_bajo'))>
             <label class="form-check-label" for="stock_bajo">Solo stock bajo</label>
         </div>
     </div>
-    <div class="col-5 col-md-2"><button class="btn btn-suave w-100"><i class="bi bi-search"></i></button></div>
 </form>
+
+<div data-resultados>
 
 <div class="row g-3">
     @forelse ($productos as $producto)
@@ -46,4 +47,5 @@
     @endforelse
 </div>
 <div class="mt-3">{{ $productos->links() }}</div>
+</div>
 @endsection

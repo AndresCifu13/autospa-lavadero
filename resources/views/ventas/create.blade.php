@@ -106,9 +106,19 @@
         document.getElementById('btnVender').disabled = ids.length === 0;
     }
 
-    document.getElementById('filtro').addEventListener('input', e => {
-        const texto = e.target.value.toLowerCase();
-        document.querySelectorAll('.producto-item').forEach(p => p.classList.toggle('d-none', !p.dataset.nombre.includes(texto)));
+    // Sin tildes ni mayúsculas: "liquida" encuentra "Cera líquida"
+    const normalizar = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    const filtro = document.getElementById('filtro');
+    filtro.addEventListener('input', e => {
+        const texto = normalizar(e.target.value);
+        document.querySelectorAll('.producto-item').forEach(p => p.classList.toggle('d-none', !normalizar(p.dataset.nombre).includes(texto)));
+    });
+    // Enter: si queda un solo producto visible, se agrega al carrito de una
+    filtro.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const visibles = [...document.querySelectorAll('.producto-item:not(.d-none) [data-id]')];
+        if (visibles.length === 1) visibles[0].click();
     });
 })();
 </script>

@@ -20,9 +20,9 @@ class StockBajo extends Notification
     {
         return (new MailMessage)
             ->subject("⚠️ Stock bajo: {$this->producto->nombre}")
-            ->greeting("Hola {$notifiable->name},")
-            ->line("Al producto **{$this->producto->nombre}** le quedan **{$this->producto->stock}** unidades.")
-            ->line("El mínimo configurado es {$this->producto->stock_minimo}.")
-            ->action('Ver producto', route('productos.edit', $this->producto));
+            ->markdown('emails.notificaciones.stock-bajo', [
+                'usuario' => $notifiable,
+                'producto' => $this->producto,
+            ]);
     }
 }

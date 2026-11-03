@@ -238,3 +238,7 @@ a.btn:hover, .nav-link:hover, .dropdown-item:hover, .item-lista:hover, .navbar-b
     .stat .stat-valor { font-size: 1.25rem; }
     .tarjeta-cuerpo { padding: 1rem; }
 }
+
+/* Búsqueda en vivo: los resultados se atenúan mientras llegan los nuevos */
+[data-resultados] { transition: opacity .15s; }
+[data-resultados].buscando { opacity: .55; pointer-events: none; }

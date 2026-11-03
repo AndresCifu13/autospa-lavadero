@@ -3,6 +3,7 @@
 use App\Http\Controllers\AjusteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\LavadoController;
@@ -23,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 | auth       = hay que iniciar sesión
 | rol:admin  = solo administradores (ver app/Http/Middleware/VerificarRol.php)
 */
+
+// ---------- Tareas automáticas (Vercel Cron, protegido con CRON_SECRET) ----------
+Route::get('/cron/reportes', [CronController::class, 'reportes'])->name('cron.reportes');
 
 // ---------- Inicio de sesión ----------
 Route::middleware('guest')->group(function () {
@@ -64,6 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('productos', ProductoController::class)->except(['index', 'show']);
 
         Route::get('/reportes/diario', [ReporteController::class, 'diario'])->name('reportes.diario');
+        Route::get('/reportes/semanal', [ReporteController::class, 'semanal'])->name('reportes.semanal');
         Route::get('/reportes/mensual', [ReporteController::class, 'mensual'])->name('reportes.mensual');
         Route::post('/reportes/enviar', [ReporteController::class, 'enviar'])->name('reportes.enviar');
 

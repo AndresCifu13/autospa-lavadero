@@ -115,4 +115,15 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    | Diseño de los correos: plantillas en resources/views/vendor/mail
+    | y colores en resources/views/vendor/mail/html/themes/autospa.css
+    */
+    'markdown' => [
+        'theme' => env('MAIL_MARKDOWN_THEME', 'autospa'),
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
+    ],
+
 ];

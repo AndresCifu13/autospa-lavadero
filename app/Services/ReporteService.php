@@ -29,6 +29,21 @@ class ReporteService
         );
     }
 
+    /** Reporte de una semana (lunes a domingo), con el detalle día por día. */
+    public function semanal(Carbon $fecha): ResumenReporte
+    {
+        $desde = $fecha->copy()->startOfWeek(Carbon::MONDAY)->startOfDay();
+        $hasta = $desde->copy()->endOfWeek(Carbon::SUNDAY)->endOfDay();
+
+        return $this->generar(
+            'Reporte semanal del '.$desde->translatedFormat('d \d\e F').' al '.$hasta->translatedFormat('d \d\e F \d\e Y'),
+            $desde,
+            $hasta,
+            conDetallePorDia: true,
+            tipo: 'semanal',
+        );
+    }
+
     /** Reporte de un mes completo, con el detalle día por día (HU-17). */
     public function mensual(int $anio, int $mes): ResumenReporte
     {
@@ -39,6 +54,7 @@ class ReporteService
             $desde,
             $desde->copy()->endOfMonth(),
             conDetallePorDia: true,
+            tipo: 'mensual',
         );
     }
 
@@ -65,7 +81,7 @@ class ReporteService
         }
     }
 
-    public function generar(string $titulo, Carbon $desde, Carbon $hasta, bool $conDetallePorDia = false): ResumenReporte
+    public function generar(string $titulo, Carbon $desde, Carbon $hasta, bool $conDetallePorDia = false, string $tipo = 'diario'): ResumenReporte
     {
         $lavados = Lavado::with(['servicios', 'empleado'])
             ->whereBetween('created_at', [$desde, $hasta])
@@ -92,6 +108,7 @@ class ReporteService
             gastosPorCategoria: $gastos->groupBy(fn (Gasto $g) => $g->categoria->etiqueta())
                 ->map->sum('monto')->sortDesc()->all(),
             porDia: $conDetallePorDia ? $this->totalesPorDia($desde, $hasta, $pagados, $ventas, $gastos) : [],
+            tipo: $tipo,
         );
     }
 

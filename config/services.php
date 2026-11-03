@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    // Clave con la que Vercel Cron llama a /cron/reportes (ver CronController)
+    'cron' => [
+        'secret' => env('CRON_SECRET'),
+    ],
+
 ];

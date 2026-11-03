@@ -31,7 +31,19 @@ final readonly class ResumenReporte
         public array $gastosPorCategoria = [],
         /** @var array<string, array{ingresos:float, gastos:float}> fecha => valores (solo mensual) */
         public array $porDia = [],
+        /** diario | semanal | mensual */
+        public string $tipo = 'diario',
     ) {}
+
+    /** Nombre de la ruta donde se ve este reporte completo. */
+    public function ruta(): string
+    {
+        return match ($this->tipo) {
+            'semanal' => route('reportes.semanal', ['semana' => $this->desde->toDateString()]),
+            'mensual' => route('reportes.mensual', ['mes' => $this->desde->format('Y-m')]),
+            default => route('reportes.diario', ['fecha' => $this->desde->toDateString()]),
+        };
+    }
 
     public function totalIngresos(): float
     {

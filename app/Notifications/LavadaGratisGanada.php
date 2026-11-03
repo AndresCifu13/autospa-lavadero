@@ -20,10 +20,6 @@ class LavadaGratisGanada extends Notification
     {
         return (new MailMessage)
             ->subject('🎉 ¡Ganaste una lavada gratis!')
-            ->greeting("¡Felicitaciones {$this->cliente->nombre}!")
-            ->line('Completaste tu tarjeta de fidelización y tu próxima lavada es GRATIS.')
-            ->line("Lavadas gratis disponibles: **{$this->cliente->lavadas_gratis}**")
-            ->line('Solo dile al empleado que quieres usarla la próxima vez que vengas.')
-            ->salutation('Gracias por preferirnos — '.config('app.name'));
+            ->markdown('emails.notificaciones.lavada-gratis', ['cliente' => $this->cliente]);
     }
 }

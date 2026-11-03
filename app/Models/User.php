@@ -88,9 +88,9 @@ class User extends Authenticatable
         }
 
         return $query->where(function ($q) use ($texto) {
-            $q->where('name', 'like', "%{$texto}%")
-                ->orWhere('email', 'like', "%{$texto}%")
-                ->orWhere('documento', 'like', "%{$texto}%");
+            $q->whereLike('name', "%{$texto}%")
+                ->orWhereLike('email', "%{$texto}%")
+                ->orWhereLike('documento', "%{$texto}%");
         });
     }
 }

@@ -18,18 +18,14 @@ class VehiculoListo extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        $vehiculo = $this->lavado->vehiculo;
+        $this->lavado->loadMissing('vehiculo', 'servicios');
 
-        $mensaje = (new MailMessage)
-            ->subject("Tu vehículo {$vehiculo->placa} ya está listo 🚗✨")
-            ->greeting("Hola {$notifiable->nombre},")
-            ->line("Tu {$vehiculo->tipo->etiqueta()} de placa **{$vehiculo->placa}** ya está limpio y listo para recoger.")
-            ->line('Servicios: '.$this->lavado->servicios->pluck('nombre')->implode(', ').'.');
-
-        $mensaje = $this->lavado->pagado
-            ? $mensaje->line('El servicio ya está pago. ¡Gracias!')
-            : $mensaje->line('**Total a pagar:** '.dinero($this->lavado->total));
-
-        return $mensaje->salutation('¡Te esperamos! — '.config('app.name'));
+        return (new MailMessage)
+            ->subject("Tu vehículo {$this->lavado->vehiculo->placa} ya está listo 🚗✨")
+            ->markdown('emails.notificaciones.vehiculo-listo', [
+                'cliente' => $notifiable,
+                'lavado' => $this->lavado,
+                'vehiculo' => $this->lavado->vehiculo,
+            ]);
     }
 }

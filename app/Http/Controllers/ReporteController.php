@@ -26,6 +26,17 @@ class ReporteController extends Controller
         ]);
     }
 
+    public function semanal(Request $request): View
+    {
+        $reporte = $this->reportes->semanal($request->date('semana') ?? now());
+
+        return view('reportes.semanal', [
+            'reporte' => $reporte,
+            'semana' => $reporte->desde,
+            'correo' => Ajuste::obtener(Ajuste::CORREO_REPORTES),
+        ]);
+    }
+
     public function mensual(Request $request): View
     {
         $mes = $request->date('mes', 'Y-m') ?? now();
@@ -41,14 +52,16 @@ class ReporteController extends Controller
     public function enviar(Request $request): RedirectResponse
     {
         $datos = $request->validate([
-            'tipo' => ['required', 'in:diario,mensual'],
+            'tipo' => ['required', 'in:diario,semanal,mensual'],
             'fecha' => ['required', 'string'],
             'correo' => ['required', 'email'],
         ]);
 
-        $reporte = $datos['tipo'] === 'diario'
-            ? $this->reportes->diario(now()->parse($datos['fecha']))
-            : $this->reportes->mensual(...array_map('intval', explode('-', $datos['fecha'])));
+        $reporte = match ($datos['tipo']) {
+            'diario' => $this->reportes->diario(now()->parse($datos['fecha'])),
+            'semanal' => $this->reportes->semanal(now()->parse($datos['fecha'])),
+            'mensual' => $this->reportes->mensual(...array_map('intval', explode('-', $datos['fecha']))),
+        };
 
         return $this->reportes->enviarPorCorreo($reporte, $datos['correo'])
             ? back()->with('exito', "Reporte enviado a {$datos['correo']}.")

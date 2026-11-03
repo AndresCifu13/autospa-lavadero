@@ -7,6 +7,9 @@
       "maxDuration": 60
     }
   },
+  "crons": [
+    { "path": "/cron/reportes", "schedule": "0 1 * * *" }
+  ],
   "routes": [
     { "src": "/css/(.*)", "dest": "/public/css/$1" },
     { "src": "/js/(.*)", "dest": "/public/js/$1" },

@@ -16,8 +16,8 @@ class VehiculoController extends Controller
         $vehiculos = Vehiculo::with('cliente')
             ->withCount('lavados')
             ->when($request->buscar, fn ($q, $texto) => $q->where(fn ($q) => $q
-                ->where('placa', 'like', '%'.Vehiculo::limpiarPlaca($texto).'%')
-                ->orWhere('marca', 'like', "%{$texto}%")))
+                ->whereLike('placa', '%'.Vehiculo::limpiarPlaca($texto).'%')
+                ->orWhereLike('marca', "%{$texto}%")))
             ->when($request->tipo, fn ($q, $tipo) => $q->where('tipo', $tipo))
             ->orderBy('placa')
             ->paginate(12)

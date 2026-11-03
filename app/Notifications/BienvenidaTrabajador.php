@@ -19,11 +19,9 @@ class BienvenidaTrabajador extends Notification
     {
         return (new MailMessage)
             ->subject('¡Bienvenido al equipo de '.config('app.name').'!')
-            ->greeting("Hola {$notifiable->name},")
-            ->line('Ya tienes una cuenta para usar el sistema del lavadero.')
-            ->line("**Usuario:** {$notifiable->email}")
-            ->line("**Contraseña:** {$this->claveTemporal}")
-            ->action('Entrar al sistema', route('login'))
-            ->line('Por seguridad, cambia tu contraseña desde "Mi perfil" la primera vez que entres.');
+            ->markdown('emails.notificaciones.bienvenida', [
+                'usuario' => $notifiable,
+                'claveTemporal' => $this->claveTemporal,
+            ]);
     }
 }

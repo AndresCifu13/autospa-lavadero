@@ -44,8 +44,15 @@
                             <li><a class="dropdown-item {{ activo('ajustes.*') }}" href="{{ route('ajustes.edit') }}"><i class="bi bi-sliders me-2"></i>Configuración</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ activo('reportes.*') }}" href="{{ route('reportes.diario') }}"><i class="bi bi-bar-chart-line me-1"></i> Reportes</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ activo('reportes.*') }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bar-chart-line me-1"></i> Reportes
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item {{ activo('reportes.diario') }}" href="{{ route('reportes.diario') }}"><i class="bi bi-calendar-day me-2"></i>Ver diario</a></li>
+                            <li><a class="dropdown-item {{ activo('reportes.semanal') }}" href="{{ route('reportes.semanal') }}"><i class="bi bi-calendar-week me-2"></i>Ver semanal</a></li>
+                            <li><a class="dropdown-item {{ activo('reportes.mensual') }}" href="{{ route('reportes.mensual') }}"><i class="bi bi-calendar3 me-2"></i>Ver mensual</a></li>
+                        </ul>
                     </li>
                 @endif
             </ul>

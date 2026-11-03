@@ -3,9 +3,10 @@
 
 @section('contenido')
 <x-encabezado titulo="Reporte mensual" icono="bi-calendar3" :subtitulo="ucfirst($mes->translatedFormat('F \d\e Y'))">
-    <a href="{{ route('reportes.diario') }}" class="btn btn-blanco no-imprimir"><i class="bi bi-calendar-day me-1"></i> Ver diario</a>
     <button onclick="window.print()" class="btn btn-blanco no-imprimir"><i class="bi bi-printer"></i></button>
 </x-encabezado>
+
+@include('reportes._pestanas')
 
 <form class="d-flex gap-2 mb-3 no-imprimir" method="GET" style="max-width:360px">
     <input type="month" name="mes" value="{{ $mes->format('Y-m') }}" max="{{ now()->format('Y-m') }}" class="form-control">

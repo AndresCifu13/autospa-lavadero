@@ -62,10 +62,10 @@ class Cliente extends Model
         }
 
         return $query->where(function ($q) use ($texto) {
-            $q->where('nombre', 'like', "%{$texto}%")
-                ->orWhere('documento', 'like', "%{$texto}%")
-                ->orWhere('telefono', 'like', "%{$texto}%")
-                ->orWhereHas('vehiculos', fn ($v) => $v->where('placa', 'like', "%{$texto}%"));
+            $q->whereLike('nombre', "%{$texto}%")
+                ->orWhereLike('documento', "%{$texto}%")
+                ->orWhereLike('telefono', "%{$texto}%")
+                ->orWhereHas('vehiculos', fn ($v) => $v->whereLike('placa', "%{$texto}%"));
         });
     }
 }

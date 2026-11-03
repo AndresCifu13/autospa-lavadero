@@ -7,13 +7,14 @@
     <a href="{{ route('clientes.create') }}" class="btn btn-principal"><i class="bi bi-person-plus me-1"></i> Nuevo cliente</a>
 </x-encabezado>
 
-<form class="mb-3" method="GET">
+<form class="mb-3" method="GET" role="search" data-busqueda-vivo>
     <div class="input-group">
         <span class="input-group-text bg-white" style="border-radius:12px 0 0 12px"><i class="bi bi-search"></i></span>
-        <input type="search" name="buscar" value="{{ request('buscar') }}" class="form-control" placeholder="Buscar por nombre, documento, teléfono o placa">
-        <button class="btn btn-suave" style="border-radius:0 12px 12px 0">Buscar</button>
+        <input type="search" name="buscar" value="{{ request('buscar') }}" class="form-control" style="border-radius:0 12px 12px 0" autocomplete="off" placeholder="Buscar por nombre, documento, teléfono o placa">
     </div>
 </form>
+
+<div data-resultados>
 
 <div class="tarjeta overflow-hidden">
     @if ($clientes->isEmpty())
@@ -53,4 +54,5 @@
     @endif
 </div>
 <div class="mt-3">{{ $clientes->links() }}</div>
+</div>
 @endsection
