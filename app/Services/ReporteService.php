@@ -9,6 +9,7 @@ use App\Models\Ajuste;
 use App\Models\Gasto;
 use App\Models\Lavado;
 use App\Models\Venta;
+use App\Support\ErrorCorreo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +20,9 @@ use Throwable;
  */
 class ReporteService
 {
+    /** Explicación del último fallo al enviar por correo (para mostrarla al administrador). */
+    public ?string $ultimoError = null;
+
     /** Reporte de un solo día (HU-15). */
     public function diario(Carbon $fecha): ResumenReporte
     {
@@ -67,6 +71,8 @@ class ReporteService
         $lista = Ajuste::listaCorreos($correos ?? Ajuste::obtener(Ajuste::CORREO_REPORTES));
 
         if (! $lista) {
+            $this->ultimoError = 'No hay correos configurados para enviar el reporte.';
+
             return false;
         }
 
@@ -76,6 +82,7 @@ class ReporteService
             return true;
         } catch (Throwable $e) {
             Log::error('No se pudo enviar el reporte por correo', ['error' => $e->getMessage()]);
+            $this->ultimoError = ErrorCorreo::explicar($e);
 
             return false;
         }

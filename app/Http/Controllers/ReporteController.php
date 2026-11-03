@@ -68,6 +68,6 @@ class ReporteController extends Controller
 
         return $this->reportes->enviarPorCorreo($reporte, $correos)
             ? back()->with('exito', "Reporte enviado a {$correos}.")
-            : back()->with('error', 'No se pudo enviar el correo. Revisa la configuración MAIL_ del archivo .env.');
+            : back()->withInput()->with('error', $this->reportes->ultimoError ?? 'No se pudo enviar el correo.');
     }
 }
