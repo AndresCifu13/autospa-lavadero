@@ -17,6 +17,45 @@ class Ajuste extends Model
     public const LAVADAS_PARA_GRATIS = 'lavadas_para_gratis';
     public const CORREO_REPORTES = 'correo_reportes';
     public const NOMBRE_NEGOCIO = 'nombre_negocio';
+    public const CORREOS_AVISOS = 'correos_avisos';
+    public const AVISOS_TIPOS = 'avisos_tipos';
+
+    public const MAXIMO_CORREOS = 10;
+
+    /** Qué registros pueden generar un aviso por correo (clave => texto). */
+    public const TIPOS_AVISO = [
+        'lavados' => 'Lavados',
+        'ventas' => 'Ventas de la tienda',
+        'clientes' => 'Clientes',
+        'vehiculos' => 'Vehículos',
+        'gastos' => 'Gastos',
+        'productos' => 'Productos',
+        'trabajadores' => 'Trabajadores',
+    ];
+
+    /**
+     * Convierte "uno@x.com, otro@y.com" en ['uno@x.com', 'otro@y.com'].
+     * Ignora lo que no sea un correo válido y los repetidos.
+     */
+    public static function listaCorreos(?string $texto): array
+    {
+        $partes = preg_split('/[\s,;]+/', (string) $texto, -1, PREG_SPLIT_NO_EMPTY);
+
+        return array_values(array_unique(array_filter(
+            array_map('mb_strtolower', $partes),
+            fn ($correo) => filter_var($correo, FILTER_VALIDATE_EMAIL),
+        )));
+    }
+
+    /** Tipos de registro marcados en Configuración (por defecto todos). */
+    public static function avisosActivos(): array
+    {
+        $guardado = static::obtener(self::AVISOS_TIPOS);
+
+        return $guardado === null
+            ? array_keys(self::TIPOS_AVISO)
+            : array_values(array_intersect(explode(',', $guardado), array_keys(self::TIPOS_AVISO)));
+    }
 
     public static function obtener(string $clave, mixed $porDefecto = null): mixed
     {

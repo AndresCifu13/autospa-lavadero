@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Ajuste;
+use App\Observers\AvisoRegistroObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
@@ -22,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
         // En producción (Vercel) todos los enlaces generados usan https. No redirige.
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
+        }
+
+        // Aviso por correo cada vez que se registra algo (ver Configuración)
+        foreach (array_keys(AvisoRegistroObserver::MODELOS) as $modelo) {
+            $modelo::observe(AvisoRegistroObserver::class);
         }
 
         // Paginación con el estilo de Bootstrap 5

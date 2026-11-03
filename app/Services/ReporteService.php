@@ -59,19 +59,19 @@ class ReporteService
     }
 
     /**
-     * Envía el reporte por correo (HU-16).
-     * Si no se indica correo, usa el configurado en Ajustes.
+     * Envía el reporte por correo (HU-16) a uno o varios correos ("a@x.com, b@y.com").
+     * Si no se indican correos, usa los configurados en Ajustes.
      */
-    public function enviarPorCorreo(ResumenReporte $reporte, ?string $correo = null): bool
+    public function enviarPorCorreo(ResumenReporte $reporte, ?string $correos = null): bool
     {
-        $correo ??= Ajuste::obtener(Ajuste::CORREO_REPORTES);
+        $lista = Ajuste::listaCorreos($correos ?? Ajuste::obtener(Ajuste::CORREO_REPORTES));
 
-        if (! $correo) {
+        if (! $lista) {
             return false;
         }
 
         try {
-            Mail::to($correo)->send(new ReporteMail($reporte));
+            Mail::to($lista)->send(new ReporteMail($reporte));
 
             return true;
         } catch (Throwable $e) {

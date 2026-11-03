@@ -16,12 +16,14 @@ class AjusteController extends Controller
             'nombreNegocio' => Ajuste::obtener(Ajuste::NOMBRE_NEGOCIO, config('app.name')),
             'lavadasParaGratis' => Ajuste::lavadasParaGratis(),
             'correoReportes' => Ajuste::obtener(Ajuste::CORREO_REPORTES),
+            'correosAvisos' => Ajuste::obtener(Ajuste::CORREOS_AVISOS),
+            'avisosActivos' => Ajuste::avisosActivos(),
         ]);
     }
 
     public function update(AjusteRequest $request): RedirectResponse
     {
-        foreach ($request->validated() as $clave => $valor) {
+        foreach ($request->ajustes() as $clave => $valor) {
             Ajuste::guardar($clave, $valor);
         }
 

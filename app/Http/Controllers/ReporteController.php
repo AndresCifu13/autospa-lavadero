@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ajuste;
+use App\Rules\ListaDeCorreos;
 use App\Services\ReporteService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class ReporteController extends Controller
         $datos = $request->validate([
             'tipo' => ['required', 'in:diario,semanal,mensual'],
             'fecha' => ['required', 'string'],
-            'correo' => ['required', 'email'],
+            'correo' => ['required', 'string', 'max:500', new ListaDeCorreos],
         ]);
 
         $reporte = match ($datos['tipo']) {
@@ -63,8 +64,10 @@ class ReporteController extends Controller
             'mensual' => $this->reportes->mensual(...array_map('intval', explode('-', $datos['fecha']))),
         };
 
-        return $this->reportes->enviarPorCorreo($reporte, $datos['correo'])
-            ? back()->with('exito', "Reporte enviado a {$datos['correo']}.")
+        $correos = implode(', ', Ajuste::listaCorreos($datos['correo']));
+
+        return $this->reportes->enviarPorCorreo($reporte, $correos)
+            ? back()->with('exito', "Reporte enviado a {$correos}.")
             : back()->with('error', 'No se pudo enviar el correo. Revisa la configuración MAIL_ del archivo .env.');
     }
 }
