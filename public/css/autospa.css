@@ -242,3 +242,39 @@ a.btn:hover, .nav-link:hover, .dropdown-item:hover, .item-lista:hover, .navbar-b
 /* Búsqueda en vivo: los resultados se atenúan mientras llegan los nuevos */
 [data-resultados] { transition: opacity .15s; }
 [data-resultados].buscando { opacity: .55; pointer-events: none; }
+
+/* ---------- Indicadores de carga ---------- */
+
+/* Botón o enlace presionado: spinner al lado del texto y sin poder volver a tocarlo */
+.cargando { pointer-events: none; cursor: progress; opacity: .85; }
+.cargando .spinner-border { vertical-align: -.15em; }
+.btn:disabled.cargando, .btn.disabled.cargando { opacity: .85; }
+
+/* Barra delgada arriba de la pantalla mientras carga la siguiente página.
+   Avanza rápido al principio y se va frenando: con internet lento sigue moviéndose. */
+#barraCarga {
+    position: fixed; top: 0; left: 0; z-index: 2000;
+    height: 3px; width: 0;
+    background: linear-gradient(90deg, var(--azul-fuerte), var(--lila-fuerte), var(--rosa-fuerte));
+    box-shadow: 0 0 8px rgba(63, 111, 174, .5);
+    opacity: 0; pointer-events: none;
+}
+#barraCarga.activa { opacity: 1; animation: barra-carga 12s cubic-bezier(.08, .8, .2, 1) forwards; }
+@keyframes barra-carga {
+    0% { width: 0; }
+    10% { width: 35%; }
+    40% { width: 70%; }
+    100% { width: 94%; }
+}
+
+/* Spinner dentro de la caja de búsqueda en vivo */
+.caja-busqueda { position: relative; }
+.spinner-busqueda {
+    position: absolute; right: 2.4rem; top: 50%; margin-top: -.5rem;
+    color: var(--azul-fuerte); opacity: 0; transition: opacity .15s; pointer-events: none; z-index: 5;
+}
+form.buscando .spinner-busqueda { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    #barraCarga.activa { animation-duration: 0s; width: 94%; }
+}
