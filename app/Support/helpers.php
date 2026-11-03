@@ -20,3 +20,19 @@ if (! function_exists('activo')) {
         return request()->routeIs(...$rutas) ? 'active' : '';
     }
 }
+
+if (! function_exists('limpiar_env')) {
+    /**
+     * Lee una variable de entorno quitando espacios, saltos de línea y comillas
+     * de los extremos. Útil para valores pegados a mano en Vercel.
+     * Devuelve '' si no existe o es "null".
+     */
+    function limpiar_env(string $clave): string
+    {
+        $valor = env($clave);
+
+        return is_string($valor) || is_int($valor)
+            ? trim((string) $valor, " \t\n\r\0\x0B\"'")
+            : '';
+    }
+}

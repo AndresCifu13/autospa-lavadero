@@ -37,14 +37,17 @@ return [
 
     'mailers' => [
 
+        // Los valores se "limpian" (comillas, espacios, saltos de línea) porque al
+        // pegarlos en Vercel suelen quedar con comillas y Gmail rechaza la clave.
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME'),
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 2525),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'scheme' => in_array($esquema = strtolower(limpiar_env('MAIL_SCHEME')), ['smtp', 'smtps'], true) ? $esquema : null,
+            'url' => limpiar_env('MAIL_URL') ?: null,
+            'host' => limpiar_env('MAIL_HOST') ?: '127.0.0.1',
+            'port' => (int) (limpiar_env('MAIL_PORT') ?: 2525),
+            'username' => limpiar_env('MAIL_USERNAME') ?: null,
+            // Las claves de aplicación de Gmail no tienen espacios: se quitan todos
+            'password' => preg_replace('/\s+/', '', limpiar_env('MAIL_PASSWORD')) ?: null,
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],

@@ -18,7 +18,8 @@ class ErrorCorreo
             str_contains($m, 'scheme is not supported')
                 => 'La variable MAIL_SCHEME tiene un valor inválido (por ejemplo "tls"). Bórrala en Vercel.',
             str_contains($m, 'Failed to authenticate'), str_contains($m, '535'), str_contains($m, 'BadCredentials')
-                => 'Gmail rechazó el usuario o la clave. MAIL_USERNAME debe ser tu Gmail completo y MAIL_PASSWORD la clave de aplicación de 16 letras (no tu contraseña normal), sin espacios.',
+                => 'Gmail rechazó el usuario o la clave. '.self::diagnostico()
+                    .' MAIL_USERNAME debe ser tu Gmail completo y MAIL_PASSWORD la clave de aplicación de 16 letras (no tu contraseña normal).',
             str_contains($m, '530'), str_contains($m, 'Authentication Required')
                 => 'Falta MAIL_USERNAME o MAIL_PASSWORD en Vercel.',
             str_contains($m, 'Connection could not be established'), str_contains($m, 'timed out'), str_contains($m, 'getaddrinfo')
@@ -31,5 +32,21 @@ class ErrorCorreo
         };
 
         return 'No se pudo enviar el correo. '.$causa.' Después de cambiar variables en Vercel haz Redeploy.';
+    }
+
+    /** Qué datos está usando la app, sin revelar la clave (solo su largo). */
+    private static function diagnostico(): string
+    {
+        $usuario = config('mail.mailers.smtp.username') ?: '(vacío)';
+        $largo = mb_strlen((string) config('mail.mailers.smtp.password'));
+        $aviso = $largo === 16 ? 'bien' : 'debería tener 16';
+
+        $texto = "La app está usando el usuario \"{$usuario}\" y una clave de {$largo} caracteres ({$aviso}).";
+
+        if (config('mail.mailers.smtp.url')) {
+            $texto .= ' Además existe la variable MAIL_URL, que reemplaza a las demás: bórrala.';
+        }
+
+        return $texto;
     }
 }
